@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Post Scheduler - Post at Optimal Times</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background: #f8f9fa;
+      color: #2c3e50;
+    }
+
+    /* Landing Page */
+    .navbar {
+      background: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0a66c2;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #0a66c2;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #094fa3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #0a66c2;
+      border: 2px solid #0a66c2;
+    }
+
+    .btn-secondary:hover {
+      background: #f0f7ff;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      margin-bottom: 20px;
+      color: #0a66c2;
+      line-height: 1.2;
+    }
+
+    .hero .tagline {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 10px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .value-prop {
+      background: #fff3cd;
+      padding: 15px 20px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 20px 0 40px;
+      font-weight: 600;
+      color: #856404;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 40px;
+      background: #0a66c2;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #094fa3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(10, 102, 194, 0.4);
+    }
+
+    .features {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 40px;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 50px;
+      color: #0a66c2;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #0a66c2;
+    }
+
+    .feature-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .pricing {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .pricing h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #0a66c2;
+    }
+
+    .pricing-card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      border: 2px solid #0a66c2;
+    }
+
+    .price {
+      font-size: 48px;
+      font-weight: bold;
+      color: #0a66c2;
+      margin: 20px 0;
+    }
+
+    .price-period {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .features-list {
+      text-align: left;
+      margin: 30px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+
+    .features-list li {
+      list-style: none;
+      padding: 10px 0;
+      color: #555;
+    }
+
+    .features-list li:before {
+      content: "✓ ";
+      color: #0a66c2;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 30px;
+      margin-top: 80px;
+    }
+
+    /* Dashboard Styles */
+    .dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .dashboard h1 {
+      color: #0a66c2;
+      font-size: 32px;
+    }
+
+    .compose-section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+
+    .compose-section h2 {
+      color: #0a66c2;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .form-group input[type="datetime-local"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .posts-section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .posts-section h2 {
+      color: #0a66c2;
+      margin-bottom: 20px;
+    }
+
+    .post-card {
+      border: 1px solid #eee;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #f9fafb;
+    }
+
+    .post-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .status-scheduled {
+      background: #cfe2ff;
+      color: #084298;
+    }
+
+    .status-posted {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .post-content {
+      color: #2c3e50;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .post-meta {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+    }
+
+    .analytics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+    }
+
+    .analytic-item {
+      text-align: center;
+    }
+
+    .analytic-number {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0a66c2;
+    }
+
+    .analytic-label {
+      font-size: 12px;
+      color: #999;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+      }
+
+      .hero {
+        padding: 0 20px;
+        margin: 40px auto;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+        margin-bottom: 15px;
+      }
+
+      .hero .tagline {
+        font-size: 16px;
+      }
+
+      .cta-button {
+        padding: 14px 30px;
+        font-size: 14px;
+        width: 100%;
+      }
+
+      .features {
+        padding: 0 20px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .pricing {
+        padding: 0 20px;
+      }
+
+      .dashboard {
+        padding: 20px 15px;
+      }
+
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .dashboard-header > div:last-child {
+        width: 100%;
+        text-align: left;
+      }
+
+      .compose-section {
+        padding: 20px;
+      }
+
+      .compose-section > div {
+        grid-template-columns: 1fr !important;
+      }
+
+      .analytics-row {
+        grid-template-columns: 1fr;
+      }
+
+      .post-card {
+        grid-template-columns: 1fr !important;
+      }
+
+      .btn {
+        padding: 12px 16px;
+        font-size: 13px;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+      }
+
+      input[type="datetime-local"],
+      textarea {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
