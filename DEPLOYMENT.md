@@ -33,8 +33,8 @@ In Railway dashboard, add variables:
 ```
 PORT=5000
 NODE_ENV=production
-STRIPE_SECRET_KEY=sk_test_4eC39HqLyjWDarhtT657tSRx
-STRIPE_WEBHOOK_SECRET=whsec_test_1234567890
+STRIPE_SECRET_KEY=(add your test key in Railway dashboard)
+STRIPE_WEBHOOK_SECRET=(add your webhook secret)
 JWT_SECRET=your-prod-secret-key
 LINKEDIN_CLIENT_ID=your-linkedin-app-id
 LINKEDIN_CLIENT_SECRET=your-linkedin-app-secret
